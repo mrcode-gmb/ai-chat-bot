@@ -31,21 +31,6 @@ chatForm.addEventListener('submit', async (e) => {
         const data = await response.json();
         const reply = data.choices[0]?.message?.content || "Sorry, no response.";
 
-
-        const postToDataBase = await fetch('http://localhost/aichatbot/Controller/ChatController.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                chat_id: chatId,
-                user_message: message,
-                bot_reply: reply
-            })
-        });
-
-        const result = await postToDataBase.json();
-        console.log("Chat store result:", result);
         updateLastBotMessage(reply);
     } catch (error) {
         updateLastBotMessage("An error occurred. Please try again.");
@@ -78,42 +63,3 @@ function fillInput(text) {
 }
 
 
-async function loadChat(chat_id) {
-    try {
-        const response = await fetch(`http://localhost/aichatbot/Controller/GetChatsController.php?chat_id=${chat_id}`);
-        const chats = await response.json();
-
-        chatMessages.innerHTML = ''; // clear previous chats
-
-        chatId = chat_id;
-        chats.forEach(chat => {
-            addMessage('user', chat.user_message);
-            addMessage('bot', chat.bot_reply);
-        });
-        
-    } catch (error) {
-        console.error("Failed to load chat:", error);
-    }
-}
-
-function generateUniqueId() {
-  return Date.now().toString(36) + Math.random().toString(36).substring(2);
-}
-
-
-async function loadNewChat(new_chat_id){
-
-    try{
-        chatId = generateUniqueId();
-        const response = await fetch(`http://localhost/aichatbot/Controller/CreaeNewChatsController.php?chat_id=${chatId}`);
-        const chats = await response.json();
-        chats.forEach(chat => {
-            addMessage('user', chat.user_message);
-            addMessage('bot', chat.bot_reply);
-        });
-        console.log(response)
-        alert("You have registered the new chat now start the message")
-    }catch(err){
-        console.log(err)
-    }
-}

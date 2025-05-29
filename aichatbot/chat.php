@@ -34,7 +34,7 @@
 <body>
     <div class="chat-container">
         <aside class="sidebar">
-            <h2>AI ChatBot</h2>
+            <h2>Nyvra</h2>
             <div class="user-profile">
                 <img src="img/images.jpeg" alt="User Profile" />
                 <div class="user-info">
